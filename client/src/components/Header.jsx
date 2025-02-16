@@ -42,6 +42,8 @@ export default function Header() {
             inline
             label={
               <Avatar alt='user' img={currentUser.profilePicture} rounded />
+              // <Avatar alt='user' img={currentUser.profilePicture} rounded />
+              // https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png
             }
           >
             <Dropdown.Header>
