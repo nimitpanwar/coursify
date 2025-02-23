@@ -12,6 +12,7 @@ import {
 import { useState } from 'react';
 import { Button, TextInput, Alert, Modal } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { Link } from 'react-router-dom';
 
 export default function DashProfile() {
   const { currentUser, error } = useSelector((state) => state.user);
@@ -118,6 +119,19 @@ export default function DashProfile() {
         <Button type='submit' gradientDuoTone='purpleToBlue' outline>
           Update
         </Button>
+        {
+          currentUser.isAdmin && (
+            <Link to={'/create-course'}>
+            <Button
+              type = 'button'
+              gradientDuoTone='purpleToPink'
+              className='w-full'
+              > 
+              Add a Course
+            </Button>
+            </Link>
+          )
+        }
       </form>
       <div className='text-red-500 flex justify-between mt-5'>
         <span className='cursor-pointer' onClick={()=>setShowModal(true)}>Delete Account</span>
