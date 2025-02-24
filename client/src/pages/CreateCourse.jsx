@@ -48,7 +48,7 @@ export default function CreateCourse() {
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 />
                 <Select
-                    onChange={(e) => setFormData({ ...formData, department: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, category: e.target.value })} // Changed 'department' to 'category'
                 >
                     <option value="uncategorized">Select course department</option>
                     <option value="mth">MTH</option>
