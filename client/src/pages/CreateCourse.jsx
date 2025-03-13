@@ -51,8 +51,8 @@ export default function CreateCourse() {
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })} // Changed 'department' to 'category'
                 >
                     <option value="uncategorized">Select course department</option>
-                    <option value="mth">MTH</option>
-                    <option value="des">DES</option>
+                    <option value="maths">Maths</option>
+                    <option value="Design">Design</option>
                     <option value="cse">CSE</option>
                     <option value="ssh">SSH</option>
                     <option value="bio">BIO</option>
@@ -67,9 +67,11 @@ export default function CreateCourse() {
                 required
                 onChange={(value) => setFormData({ ...formData, content: value })}
             />
-            <Button type='submit' gradientDuoTone='purpleToPink'>
+            <button type='submit'   className='border border-blue-500 text-blue-500 bg-white hover:bg-blue-500 hover:text-white 
+             dark:border-white dark:text-white dark:bg-gray-900 dark:hover:bg-white dark:hover:text-gray-900 
+             font-bold py-3 px-3 text-xs rounded-full'>
                 Add
-            </Button>
+            </button>
             {publishError && (
           <Alert className='mt-5' color='failure'>
             {publishError}

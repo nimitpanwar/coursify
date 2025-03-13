@@ -35,9 +35,18 @@ export default function OAuth() {
         }
     } 
   return (
-    <Button type='button' gradientDuoTone='pinkToOrange' outline onClick={handleGoogleClick}>
-        <AiFillGoogleCircle className='w-6 h-6 mr-2'/>
-        Continue with Google
-    </Button>
+<button 
+  onClick={handleGoogleClick} 
+  className='flex items-center justify-center border border-gray-400 text-black text-sm bg-white hover:bg-gray-200 active:bg-gray-300 font-medium py-2 px-4 rounded-full'
+>
+  <img 
+    src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" 
+    alt="Google Logo" 
+    className="w-5 h-5 mr-2"
+  />
+  Continue with Google
+</button>
+
+
   )
 }

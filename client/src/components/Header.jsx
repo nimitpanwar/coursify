@@ -33,7 +33,7 @@ export default function Header() {
         to='/'
         className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'
       >
-        <span className='px-2 py-1 font-bold text-black'>
+        <span className='px-2 py-1 font-bold text-black dark:text-white'>
           Coursify
         </span>
       </Link>
@@ -74,9 +74,10 @@ export default function Header() {
           </Dropdown>
         ) : (
           <Link to='/sign-in'>
-            <Button gradientDuoTone='purpleToBlue' outline>
-              Sign In
-            </Button>
+          <button className=' border-black border-[1px] text-black text-sm bg-white hover:bg-gray-100 active:bg-gray-300 font-bold py-3 px-4 rounded-full'>
+            Sign In
+          </button>
+
           </Link>
         )}
         <Navbar.Toggle />
@@ -85,11 +86,11 @@ export default function Header() {
         <Navbar.Link active={path === '/'} as={'div'}>
           <Link to='/'>Home</Link>
         </Navbar.Link>
+        <Navbar.Link active={path === '/projects'} as={'div'}>
+          <Link to='/projects'>Courses</Link>
+        </Navbar.Link>
         <Navbar.Link active={path === '/about'} as={'div'}>
           <Link to='/about'>About</Link>
-        </Navbar.Link>
-        <Navbar.Link active={path === '/projects'} as={'div'}>
-          <Link to='/projects'>Projects</Link>
         </Navbar.Link>
       </Navbar.Collapse>
     </Navbar>

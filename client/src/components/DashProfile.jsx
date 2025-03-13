@@ -116,19 +116,22 @@ export default function DashProfile() {
           placeholder='password'
           onChange={handleChange}
         />
-        <Button type='submit' gradientDuoTone='purpleToBlue' outline>
+        <button type='submit'   className='border border-blue-500 text-blue-500 bg-white hover:bg-blue-500 hover:text-white 
+             dark:border-white dark:text-white dark:bg-gray-900 dark:hover:bg-white dark:hover:text-gray-900 
+             font-bold py-3 px-3 text-xs rounded-full'  outline>
           Update
-        </Button>
+        </button>
         {
           currentUser.isAdmin && (
             <Link to={'/create-course'}>
-            <Button
-              type = 'button'
-              gradientDuoTone='purpleToPink'
-              className='w-full'
+            <button
+              type = 'button' outline
+              className='w-full border border-blue-500 text-blue-500 bg-white hover:bg-blue-500 hover:text-white 
+             dark:border-white dark:text-white dark:bg-gray-900 dark:hover:bg-white dark:hover:text-gray-900 
+             font-bold py-3 px-3 text-xs rounded-full'
               > 
               Add a Course
-            </Button>
+            </button>
             </Link>
           )
         }

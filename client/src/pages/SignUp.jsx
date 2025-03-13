@@ -60,7 +60,9 @@ export default function SignUp() {
             </div>
             <button
               type='submit'
-              className='border border-blue-500 text-blue-500 bg-white hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded'
+              className='border border-blue-500 text-blue-500 bg-white hover:bg-blue-500 hover:text-white 
+              dark:border-white dark:text-white dark:bg-gray-900 dark:hover:bg-white dark:hover:text-gray-900 
+              font-bold py-3 px-3 text-xs rounded-full' 
               disabled={loading}>
               {
                 loading ? (

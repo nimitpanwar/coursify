@@ -82,8 +82,8 @@ export default function UpdatePost() {
             value={formData.category}
           >
                     <option value="uncategorized">Select course department</option>
-                    <option value="mth">MTH</option>
-                    <option value="des">DES</option>
+                    <option value="Maths">Maths</option>
+                    <option value="design">Design</option>
                     <option value="cse">CSE</option>
                     <option value="ssh">SSH</option>
                     <option value="bio">BIO</option>
@@ -101,9 +101,11 @@ export default function UpdatePost() {
             setFormData({ ...formData, content: value });
           }}
         />
-        <Button type='submit' gradientDuoTone='purpleToPink'>
-          Update post
-        </Button>
+        <button type='submit'   className='border border-blue-500 text-blue-500 bg-white hover:bg-blue-500 hover:text-white 
+             dark:border-white dark:text-white dark:bg-gray-900 dark:hover:bg-white dark:hover:text-gray-900 
+             font-bold py-3 px-3 text-xs rounded-full' >
+          Update Course
+        </button>
         {publishError && (
           <Alert className='mt-5' color='failure'>
             {publishError}
