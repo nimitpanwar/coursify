@@ -96,7 +96,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
         ) : (
           <>
           {/* review update */}
-          <div className='text-gray-500 pb-2'>
+          <div className='text-gray-700 pb-2 dark:text-gray-200'>
           {comment.content.split('\n').map((line, index) => {
             if (line.startsWith('Professor:')) {
               return (

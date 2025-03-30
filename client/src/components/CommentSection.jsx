@@ -127,7 +127,7 @@ export default function CommentSection({ postId }) {
             className='border border-teal-500 rounded-md p-3'
           >
             {/* Professor Name Input */}
-            <label className='block text-gray-700 text-sm font-semibold mb-1'>Professor</label>
+            <label className='block text-gray-700 text-sm font-semibold mb-1 dark:text-gray-200'>Professor</label>
             <TextInput
               type='text'
               placeholder='Enter professor name'
@@ -137,7 +137,7 @@ export default function CommentSection({ postId }) {
             />
 
             {/* Offering Input */}
-            <label className='block text-gray-700 text-sm font-semibold mt-3 mb-1'>Offering</label>
+            <label className='block text-gray-700 text-sm font-semibold mt-3 mb-1 dark:text-gray-200'>Offering</label>
             <TextInput
               type='text'
               placeholder='Enter offering (e.g., Winter 2025)'
@@ -147,7 +147,7 @@ export default function CommentSection({ postId }) {
             />
 
             {/* Comment Box */}
-            <label className='block text-gray-700 text-sm font-semibold mt-3 mb-1'>Review</label>
+            <label className='block text-gray-700 text-sm font-semibold mt-3 mb-1 dark:text-gray-200'>Review</label>
             <Textarea
               placeholder='Add a review...'
               rows='3'
