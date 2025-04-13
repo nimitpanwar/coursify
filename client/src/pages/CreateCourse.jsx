@@ -52,7 +52,7 @@ export default function CreateCourse() {
                 >
                     <option value="uncategorized">Select course department</option>
                     <option value="maths">Maths</option>
-                    <option value="Design">Design</option>
+                    <option value="design">Design</option>
                     <option value="cse">CSE</option>
                     <option value="ssh">SSH</option>
                     <option value="bio">BIO</option>
