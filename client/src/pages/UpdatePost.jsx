@@ -82,7 +82,7 @@ export default function UpdatePost() {
             value={formData.category}
           >
                     <option value="uncategorized">Select course department</option>
-                    <option value="Maths">Maths</option>
+                    <option value="maths">Maths</option>
                     <option value="design">Design</option>
                     <option value="cse">CSE</option>
                     <option value="ssh">SSH</option>

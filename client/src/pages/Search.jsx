@@ -126,7 +126,7 @@ export default function Search() {
               id='category'
             >
               <option value='uncategorized'></option>
-              <option value='mth'>Maths</option>
+              <option value='maths'>Maths</option>
               <option value='design'>Design</option>
               <option value='cse'>CSE</option>
               <option value='ssh'>SSH</option>
