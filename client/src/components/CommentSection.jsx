@@ -1,28 +1,38 @@
-import { Alert, Button, Modal, TextInput, Textarea } from 'flowbite-react';
+import { Alert, Modal, TextInput, Textarea } from 'flowbite-react';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import Comment from './Comment';
-import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 export default function CommentSection({ postId }) {
   const { currentUser } = useSelector((state) => state.user);
-  const [comment, setComment] = useState('');
   const [professor, setProfessor] = useState('');
   const [offering, setOffering] = useState('');
+  const [review, setReview] = useState('');
+  const [resources, setResources] = useState('');
+  const [tips, setTips] = useState('');
+  const [coursework, setCoursework] = useState('');
   const [commentError, setCommentError] = useState(null);
   const [comments, setComments] = useState([]);
   const [showModal, setShowModal] = useState(false);
-  const [commentToDelete, setCommentToDelete] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (comment.length > 3000) {
+
+    if (!professor.trim()) {
+      setCommentError('Professor name is required.');
       return;
     }
 
-    const finalComment = `Professor: ${professor}\nOffering: ${offering}\n\n${comment}`;
+    let finalComment = '';
+
+    if (professor.trim()) finalComment += `Professor: ${professor.trim()}\n`;
+    if (offering.trim()) finalComment += `Offering: ${offering.trim()}\n\n`;
+    if (review.trim()) finalComment += `Overall Review:\n${review.trim()}\n\n`;
+    if (resources.trim()) finalComment += `Teaching Resources Feedback:\n${resources.trim()}\n\n`;
+    if (tips.trim()) finalComment += `Tips for Success:\n${tips.trim()}\n\n`;
+    if (coursework.trim()) finalComment += `Handling Coursework:\n${coursework.trim()}\n`;
 
     try {
       const res = await fetch('/api/comment/create', {
@@ -31,18 +41,23 @@ export default function CommentSection({ postId }) {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          content: finalComment,
+          content: finalComment.trim(),
           postId,
           userId: currentUser._id,
         }),
       });
+
       const data = await res.json();
       if (res.ok) {
-        setComment('');
         setProfessor('');
         setOffering('');
+        setReview('');
+        setResources('');
+        setTips('');
+        setCoursework('');
         setCommentError(null);
         setComments([data, ...comments]);
+        setShowModal(false);
       }
     } catch (error) {
       setCommentError(error.message);
@@ -101,7 +116,6 @@ export default function CommentSection({ postId }) {
   };
 
   const handleDelete = async (commentId) => {
-    setShowModal(false);
     try {
       if (!currentUser) {
         navigate('/sign-in');
@@ -119,116 +133,140 @@ export default function CommentSection({ postId }) {
   };
 
   return (
-    <div className='max-w-4xl mx-auto w-full p-3'> {/* Wider comments section */}
-      {currentUser && (
-        <div className='max-w-2xl w-full mx-auto'> {/* Narrower form */}
-          <form
-            onSubmit={handleSubmit}
-            className='border border-teal-500 rounded-md p-3'
+    <div className='max-w-4xl mx-auto w-full p-3'>
+
+      {/* Centered Add Review Button */}
+      <div className='flex justify-center mb-8'>
+        {currentUser ? (
+          <button
+            onClick={() => setShowModal(true)}
+            className="inline-block border border-[#3cacac] text-white bg-[#3cacac] hover:bg-white hover:text-[#3cacac] hover:border-[#3cacac]
+            dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-white dark:hover:text-neutral-900 
+            font-semibold py-3 px-6 text-sm rounded-full transition duration-300"
           >
-            {/* Professor Name Input */}
-            <label className='block text-gray-700 text-sm font-semibold mb-1 dark:text-gray-200'>Professor</label>
-            <TextInput
-              type='text'
-              placeholder='Enter professor name'
-              value={professor}
-              onChange={(e) => setProfessor(e.target.value)}
-              required
-            />
+            Add Review
+          </button>
+        ) : (
+          <Link to='/sign-in'>
+            <button
+              className="inline-block border border-[#3cacac] text-white bg-[#3cacac] hover:bg-white hover:text-[#3cacac] hover:border-[#3cacac]
+              dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-white dark:hover:text-neutral-900 
+              font-semibold py-3 px-6 text-sm rounded-full transition duration-300"
+            >
+              Sign In to Add Review
+            </button>
+          </Link>
+        )}
+      </div>
 
-            {/* Offering Input */}
-            <label className='block text-gray-700 text-sm font-semibold mt-3 mb-1 dark:text-gray-200'>Offering</label>
-            <TextInput
-              type='text'
-              placeholder='Enter offering (e.g., Winter 2025)'
-              value={offering}
-              onChange={(e) => setOffering(e.target.value)}
-              required
-            />
-
-            {/* Comment Box */}
-            <label className='block text-gray-700 text-sm font-semibold mt-3 mb-1 dark:text-gray-200'>Review</label>
-            <Textarea
-              placeholder='Add a review...'
-              rows='3'
-              maxLength='3000'
-              onChange={(e) => setComment(e.target.value)}
-              value={comment}
-            />
-
-            <div className='flex justify-between items-center mt-5'>
-              <p className='text-gray-500 text-xs'>
-                {3000 - comment.length} characters remaining
-              </p>
-              <button className='border border-blue-500 text-blue-500 bg-white hover:bg-blue-500 hover:text-white 
-                dark:border-white dark:text-white dark:bg-gray-900 dark:hover:bg-white dark:hover:text-gray-900 
-                font-bold py-2 px-6 text-xs rounded-full'>
-                Add
-              </button>
-            </div>
-
-            {commentError && (
-              <Alert color='failure' className='mt-5'>
-                {commentError}
-              </Alert>
-            )}
-          </form>
-        </div>
-      )}
-
+      {/* Comments */}
       {comments.length === 0 ? (
         <p className='text-sm my-5'>No reviews yet!</p>
       ) : (
-        <>
-          <div className='text-sm my-5 flex items-center gap-1'>
-            <p>Reviews</p>
-            <div className='border border-gray-400 py-1 px-2 rounded-sm'>
-              <p>{comments.length}</p>
-            </div>
-          </div>
+        <div className='flex flex-col gap-6'>
           {comments.map((comment) => (
             <Comment
               key={comment._id}
               comment={comment}
               onLike={handleLike}
               onEdit={handleEdit}
-              onDelete={(commentId) => {
-                setShowModal(true);
-                setCommentToDelete(commentId);
-              }}
+              onDelete={handleDelete}
             />
           ))}
-        </>
+        </div>
       )}
 
+      {/* Modal */}
+      <Modal show={showModal} onClose={() => setShowModal(false)} size="4xl" popup>
+  <Modal.Header>
+    <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white">Add Your Review</h2>
+  </Modal.Header>
 
-
-      {/* Delete Confirmation Modal */}
-      <Modal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        popup
-        size='md'
-      >
-        <Modal.Header />
         <Modal.Body>
-          <div className='text-center'>
-            <HiOutlineExclamationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
-            <h3 className='mb-5 text-lg text-gray-500 dark:text-gray-400'>
-              Are you sure you want to delete this review?
-            </h3>
-            <div className='flex justify-center gap-4'>
-              <Button
-                color='failure'
-                onClick={() => handleDelete(commentToDelete)}
-              >
-                Yes, I'm sure
-              </Button>
-              <Button color='gray' onClick={() => setShowModal(false)}>
-                No, cancel
-              </Button>
+        <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+
+            {/* Professor Name */}
+            <div>
+              <label className='block mb-1 font-semibold'>Professor Name</label>
+              <TextInput
+                placeholder='Professor full name'
+                value={professor}
+                onChange={(e) => setProfessor(e.target.value)}
+                required
+              />
             </div>
-          </div>
+
+            {/* Course Offering */}
+            <div>
+              <label className='block mb-1 font-semibold'>Course Offering</label>
+              <TextInput
+                placeholder='Example: Winter 2025'
+                value={offering}
+                onChange={(e) => setOffering(e.target.value)}
+              />
+            </div>
+
+            {/* Overall Review */}
+            <div>
+              <label className='block mb-1 font-semibold'>Your Overall Review</label>
+              <Textarea
+                placeholder='Please cover your experience, course structure, difficulty, grading, etc.'
+                rows={5}
+                maxLength={3000}
+                value={review}
+                onChange={(e) => setReview(e.target.value)}
+              />
+            </div>
+
+            {/* Teaching Resources Feedback */}
+            <div>
+              <label className='block mb-1 font-semibold'>Teaching Resources Feedback</label>
+              <Textarea
+                placeholder='How would you rate the lecture slides, textbooks, online materials, etc.?'
+                rows={3}
+                value={resources}
+                onChange={(e) => setResources(e.target.value)}
+              />
+            </div>
+
+            {/* Tips for Success */}
+            <div>
+              <label className='block mb-1 font-semibold'>Tips for Success</label>
+              <Textarea
+                placeholder='What advice would you give to future students to do well in this course?'
+                rows={3}
+                value={tips}
+                onChange={(e) => setTips(e.target.value)}
+              />
+            </div>
+
+            {/* Handling Coursework */}
+            <div>
+              <label className='block mb-1 font-semibold'>Handling Coursework</label>
+              <Textarea
+                placeholder='Feedback on handling quizzes, assignments, projects, exams, etc.'
+                rows={3}
+                value={coursework}
+                onChange={(e) => setCoursework(e.target.value)}
+              />
+            </div>
+
+            {commentError && (
+              <Alert color='failure'>{commentError}</Alert>
+            )}
+
+            <div className='flex justify-end'>
+              <button
+                type='submit'
+                className="inline-block border border-[#3cacac] text-white bg-[#3cacac] hover:bg-white hover:text-[#3cacac] hover:border-[#3cacac]
+            dark:border-white dark:text-white dark:bg-transparent dark:hover:bg-white dark:hover:text-neutral-900 
+            font-semibold py-3 px-6 text-sm rounded-full transition duration-300"
+              >
+                Submit Review
+              </button>
+            </div>
+
+          </form>
         </Modal.Body>
       </Modal>
     </div>

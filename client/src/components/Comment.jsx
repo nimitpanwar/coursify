@@ -9,6 +9,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
   const { currentUser } = useSelector((state) => state.user);
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -48,6 +49,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
       console.log(error.message);
     }
   };
+
   return (
     <div className='flex p-4 border-b dark:border-gray-600 text-sm'>
       <div className='flex-shrink-0 mr-3'>
@@ -57,15 +59,17 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
           alt={user.username}
         />
       </div>
+
       <div className='flex-1'>
         <div className='flex items-center mb-1'>
           <span className='font-bold mr-1 text-xs truncate'>
             {user ? `@${user.username}` : 'anonymous user'}
           </span>
-          <span className='text-gray-500 text-xs'>
+          <span className='text-gray-500 text-xs ml-2'>
             {moment(comment.createdAt).fromNow()}
           </span>
         </div>
+
         {isEditing ? (
           <>
             <Textarea
@@ -95,26 +99,61 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
           </>
         ) : (
           <>
-          {/* review update */}
-          <div className='text-gray-700 pb-2 dark:text-gray-200'>
-          {comment.content.split('\n').map((line, index) => {
-            if (line.startsWith('Professor:')) {
-              return (
-                <p key={index} className='mb-2'>
-                  <strong>Professor:</strong> {line.replace('Professor: ', '')}
-                </p>
-              );
-            }
-            if (line.startsWith('Offering:')) {
-              return (
-                <p key={index} className='mb-2'>
-                  <strong>Offering:</strong> {line.replace('Offering: ', '')}
-                </p>
-              );
-            }
-            return <p key={index} className='mb-2'>{line}</p>;
-          })}
-        </div>
+            <div className='text-gray-700 pb-2 dark:text-gray-200 whitespace-pre-line'>
+              {comment.content.split('\n').map((line, index) => {
+                const trimmedLine = line.trim();
+
+                if (trimmedLine.startsWith('Professor:') && trimmedLine.replace('Professor:', '').trim()) {
+                  return (
+                    <p key={index} className='mb-2'>
+                      <strong>Professor:</strong> {trimmedLine.replace('Professor:', '').trim()}
+                    </p>
+                  );
+                }
+
+                if (trimmedLine.startsWith('Offering:') && trimmedLine.replace('Offering:', '').trim()) {
+                  return (
+                    <p key={index} className='mb-2'>
+                      <strong>Offering:</strong> {trimmedLine.replace('Offering:', '').trim()}
+                    </p>
+                  );
+                }
+
+                if (trimmedLine.startsWith('Overall Review:') && trimmedLine.replace('Overall Review:', '').trim()) {
+                  return (
+                    <p key={index} className='mb-2'>
+                      <strong>Overall Review:</strong> {trimmedLine.replace('Overall Review:', '').trim()}
+                    </p>
+                  );
+                }
+
+                if (trimmedLine.startsWith('Teaching Resources Feedback:') && trimmedLine.replace('Teaching Resources Feedback:', '').trim()) {
+                  return (
+                    <p key={index} className='mb-2'>
+                      <strong>Teaching Resources Feedback:</strong> {trimmedLine.replace('Teaching Resources Feedback:', '').trim()}
+                    </p>
+                  );
+                }
+
+                if (trimmedLine.startsWith('Tips for Success:') && trimmedLine.replace('Tips for Success:', '').trim()) {
+                  return (
+                    <p key={index} className='mb-2'>
+                      <strong>Tips for Success:</strong> {trimmedLine.replace('Tips for Success:', '').trim()}
+                    </p>
+                  );
+                }
+
+                if (trimmedLine.startsWith('Handling Coursework:') && trimmedLine.replace('Handling Coursework:', '').trim()) {
+                  return (
+                    <p key={index} className='mb-2'>
+                      <strong>Handling Coursework:</strong> {trimmedLine.replace('Handling Coursework:', '').trim()}
+                    </p>
+                  );
+                }
+
+                return <p key={index} className='mb-2'>{line}</p>;
+              })}
+            </div>
 
             <div className='flex items-center pt-2 text-xs border-t dark:border-gray-700 max-w-fit gap-2'>
               <button
@@ -134,6 +173,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
                     ' ' +
                     (comment.numberOfLikes === 1 ? 'like' : 'likes')}
               </p>
+
               {currentUser &&
                 (currentUser._id === comment.userId || currentUser.isAdmin) && (
                   <>
